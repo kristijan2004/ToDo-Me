@@ -4,15 +4,18 @@
   padding: 0;
   font-family: 'Work Sans', sans-serif;
 }
+body {
+  background-image: linear-gradient(45deg, black, transparent);
+  background-color: #023c3c;
+  min-height: 100vh;
+}
 #centerDiv {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background-image: linear-gradient(45deg, black, transparent);
-  background-color: #023c3c;
+
   align-items: center;
-  height: 100vh;
-  padding-top: 150px;
+  min-height: 100%;
 }
 #form {
   display: flex;
@@ -20,6 +23,7 @@
   align-items: center;
   width: 500px;
   padding: 0;
+  height: 36px;
 }
 #form input {
   width: 70%;
@@ -183,4 +187,42 @@
   font-family: 'Work Sans', sans-serif;
   border-right: solid 3px rgba(0, 0, 0, 0.75);
   white-space: pre;
+}
+
+#socialButtons {
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  margin-bottom: 100px;
+}
+.top {
+  width: 55px;
+  height: 55px;
+  border-bottom-left-radius: 55px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  border-bottom: 1px solid white;
+  border-left: 1px solid white;
+  padding-right: 6px;
+}
+.bottom {
+  width: 55px;
+  height: 55px;
+  border-bottom-right-radius: 55px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
+  padding-left: 6px;
+}
+.socialBtn {
+  border: none;
+  background-color: transparent;
+  padding-top: 3px;
+  cursor: pointer;
+}
+.socialBtn img {
+  width: 30px;
 }

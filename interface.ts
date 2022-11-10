@@ -46,7 +46,7 @@ function redrawList() {
     let finishBtn = document.createElement('button')
     finishBtn.setAttribute('class', 'finishBtn')
 
-    finishBtn.addEventListener('click', () => {
+    finishBtn.addEventListener('click', (): void => {
       todos.splice(el.id, 1)
       let finishedEl: User = el
       finishedTodos.push(finishedEl)
