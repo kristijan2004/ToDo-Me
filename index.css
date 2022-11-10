@@ -1,0 +1,186 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Work Sans', sans-serif;
+}
+#centerDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-image: linear-gradient(45deg, black, transparent);
+  background-color: #023c3c;
+  align-items: center;
+  height: 100vh;
+  padding-top: 150px;
+}
+#form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  padding: 0;
+}
+#form input {
+  width: 70%;
+  padding: 10px 10px;
+  border: none;
+  border-bottom-left-radius: 18px;
+  border-top-left-radius: 18px;
+  background-color: #818479;
+  color: white;
+  transition: 0.6s;
+}
+#form input::placeholder {
+  color: white;
+}
+#form input:hover {
+  background-color: black;
+  transition: 0.6s;
+}
+#form input:focus-visible {
+  outline: none;
+}
+#form:focus-visible {
+  outline: none;
+}
+#form button {
+  width: 15%;
+  border: none;
+  cursor: pointer;
+  height: 100%;
+  font-size: 17px;
+}
+#addBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#restoreBtn {
+  border-bottom-right-radius: 18px;
+  border-top-right-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#restoreBtn img {
+  max-width: 35%;
+}
+
+.deleteBtn,
+.finishBtn {
+  opacity: 0.4;
+  transition: opacity 0.7s ease;
+}
+#list {
+  margin-top: 25px;
+}
+#list li {
+  min-width: 200px;
+  background-color: #818479;
+  color: white;
+  padding: 7px;
+  border-radius: 18px;
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: capitalize;
+  transition: 0.6s;
+}
+#list li:hover {
+  background-color: black;
+  transition: 0.6s;
+}
+#list li div {
+  display: flex;
+}
+#list li div button {
+  border: none;
+  margin-right: 2px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 29px;
+  cursor: pointer;
+}
+#list li div button img {
+  max-width: 75%;
+}
+@keyframes deleteBtnAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  33.33% {
+    transform: rotate(10deg);
+  }
+  66.66% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes ZoomAnim {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes rotateAnim {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  0% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes animated-text {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 655px;
+  }
+}
+@keyframes animated-cursor {
+  0% {
+    border-right-color: rgba(0, 0, 0, 0.75);
+  }
+  100% {
+    border-right-color: transparent;
+  }
+}
+.deleteBtn:hover {
+  opacity: 1;
+  animation: deleteBtnAnimation 3s infinite;
+}
+.finishBtn:hover {
+  opacity: 1;
+}
+.finishBtn:hover img {
+  animation: ZoomAnim 3s infinite;
+}
+#addBtn:hover img {
+  animation: rotateAnim 3s infinite;
+}
+#banner {
+  font-size: 75px;
+  margin-bottom: 30px;
+  color: white;
+  animation: animated-text 2s steps(11, end) 0.5s 1 normal both,
+    animated-cursor 950ms steps(11, end) infinite;
+  overflow: hidden;
+  font-family: 'Work Sans', sans-serif;
+  border-right: solid 3px rgba(0, 0, 0, 0.75);
+  white-space: pre;
+}
