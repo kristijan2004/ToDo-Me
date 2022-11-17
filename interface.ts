@@ -31,7 +31,10 @@ function loadTodos() {
     drawFinished()
   }
 }
-window.addEventListener('load', loadTodos)
+window.addEventListener('load', () => {
+  loadTodos()
+  drawFinished()
+})
 
 function nameCheck(inputName: string) {
   let item = todos.find((el) => el.name === inputName)
@@ -54,7 +57,6 @@ function drawFinished(): void {
     finishedList.append(li)
   })
 }
-drawFinished()
 
 //Function for redrawing the todo list using the "todos" array.
 function redrawList() {
@@ -71,6 +73,9 @@ function redrawList() {
       todos.splice(el.id, 1)
       let finishedEl: User = el
       finishedTodos.push(finishedEl)
+      if (finishedTodos.length == 20) {
+        finishedTodos.splice(0, 1)
+      }
       drawFinished()
       redrawList()
       fixId(todos)
