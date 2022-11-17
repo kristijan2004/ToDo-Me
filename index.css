@@ -76,10 +76,10 @@ body {
   opacity: 0.4;
   transition: opacity 0.7s ease;
 }
-#list {
+#finishedList {
   margin-top: 25px;
 }
-#list li {
+.toDoLi {
   min-width: 200px;
   background-color: #818479;
   color: white;
@@ -92,6 +92,10 @@ body {
   text-transform: capitalize;
   transition: 0.6s;
 }
+#list {
+  margin-top: 25px;
+}
+
 #list li:hover {
   background-color: black;
   transition: 0.6s;
@@ -225,4 +229,36 @@ body {
 }
 .socialBtn img {
   width: 30px;
+}
+#listDiv {
+  display: flex;
+  min-width: 500px;
+  justify-content: space-between;
+}
+.display {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  padding-top: 15px;
+  font-family: 'Work Sans', sans-serif;
+}
+.display h3 {
+  color: white;
+}
+#finishedList span {
+  background-color: #818479;
+  color: white;
+  padding: 7px 9px;
+  border-radius: 18px;
+  margin-bottom: 3px;
+  margin-right: 3px;
+  text-transform: capitalize;
+  transition: 0.6s;
+  opacity: 0.6;
+}
+#finishedList {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 200px;
+  max-width: 250px;
 }
