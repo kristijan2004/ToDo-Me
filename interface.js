@@ -64,7 +64,7 @@ function redrawList() {
             todos.splice(el.id, 1);
             let finishedEl = el;
             finishedTodos.push(finishedEl);
-            if (finishedTodos.length == 20) {
+            if (finishedTodos.length == 10) {
                 finishedTodos.splice(0, 1);
             }
             drawFinished();
@@ -91,7 +91,7 @@ function redrawList() {
         //   fixId(todos)
         //   redrawList()
         // })
-        li.innerText = `${el.name}`;
+        li.innerHTML = `<p class="testP">${el.name}</p>`;
         let liDiv = document.createElement('div');
         let checkImg = document.createElement('img');
         let deleteImg = document.createElement('img');

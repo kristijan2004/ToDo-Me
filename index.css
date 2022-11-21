@@ -262,3 +262,76 @@ body {
   min-width: 200px;
   max-width: 250px;
 }
+
+@media (max-width: 424px) {
+  @keyframes animated-text {
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: 90%;
+    }
+  }
+  #banner {
+    font-size: 32px;
+    animation: animated-text 2s steps(11, end) 0.5s 1 normal both;
+    border-right: none;
+    text-align: center;
+  }
+  #form {
+    width: 300px;
+  }
+  #listDiv {
+    flex-direction: column-reverse;
+    align-items: center;
+    width: 100%;
+    min-width: unset;
+  }
+  .display {
+    min-width: 250px;
+    max-width: 90%;
+  }
+
+  .toDoLi {
+    justify-content: space-between;
+    word-wrap: break-word;
+  }
+  .testP {
+    width: 60%;
+  }
+}
+@media (min-width: 425px) and (max-width: 768px) {
+  @keyframes animated-text {
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: 90%;
+    }
+  }
+  #banner {
+    font-size: 45px;
+    animation: animated-text 2s steps(11, end) 0.5s 1 normal both;
+    border-right: none;
+    text-align: center;
+  }
+  #form {
+    width: 400px;
+  }
+  .display {
+    min-width: 210px;
+    max-width: 90%;
+    padding: 10px;
+  }
+  #listDiv {
+    width: 425px;
+    min-width: unset;
+  }
+  .toDoLi {
+    justify-content: space-between;
+    word-wrap: break-word;
+  }
+  .testP {
+    width: 60%;
+  }
+}
