@@ -5,6 +5,7 @@ const addBtn = document.getElementById('addBtn');
 let list = document.getElementById('list');
 let finishedList = document.getElementById('finishedList');
 const restoreBtn = document.getElementById('restoreBtn');
+let paginationDiv = document.getElementById('pagination');
 let todos = [];
 let finishedTodos = [
     { name: 'Become succesful', id: 0, date: new Date() },
@@ -18,7 +19,7 @@ function loadTodos() {
     let newFinishedTodos = localStorage.getItem('finishedTodos');
     if (newTodos) {
         todos = JSON.parse(newTodos);
-        redrawList();
+        redrawList(todos);
     }
     if (newFinishedTodos) {
         finishedTodos = JSON.parse(newFinishedTodos);
@@ -51,9 +52,9 @@ function drawFinished() {
     });
 }
 //Function for redrawing the todo list using the "todos" array.
-function redrawList() {
+function redrawList(array) {
     list.innerHTML = '';
-    todos.forEach((el) => {
+    array.forEach((el) => {
         let li = document.createElement('li');
         let deleteBtn = document.createElement('button');
         let finishBtn = document.createElement('button');
@@ -61,36 +62,28 @@ function redrawList() {
         // ------------------------------------------------------------
         finishBtn.setAttribute('class', 'finishBtn');
         finishBtn.addEventListener('click', () => {
-            todos.splice(el.id, 1);
+            array.splice(el.id, 1);
             let finishedEl = el;
             finishedTodos.push(finishedEl);
             if (finishedTodos.length == 10) {
                 finishedTodos.splice(0, 1);
             }
             drawFinished();
-            redrawList();
-            fixId(todos);
-            localStorage.setItem('todos', JSON.stringify(todos));
+            redrawList(array);
+            fixId(array);
+            localStorage.setItem('todos', JSON.stringify(array));
             localStorage.setItem('finishedTodos', JSON.stringify(finishedTodos));
         });
         // ---------------------------------------------------------------
         deleteBtn.setAttribute('class', 'deleteBtn');
         deleteBtn.addEventListener('click', () => {
-            todos.splice(el.id, 1);
+            array.splice(el.id, 1);
             deletedEl = el;
-            fixId(todos);
-            redrawList();
-            localStorage.setItem('todos', JSON.stringify(todos));
+            fixId(array);
+            redrawList(array);
+            localStorage.setItem('todos', JSON.stringify(array));
             restoreBtn.disabled = false;
         });
-        // editBtn.setAttribute('class', 'editBtn')
-        // editBtn.innerText = 'a'
-        // editBtn.addEventListener('click', (): void => {
-        //   editEl = el
-        //   todos.splice(el.id, 1)
-        //   fixId(todos)
-        //   redrawList()
-        // })
         li.innerHTML = `<p class="testP">${el.name}</p>`;
         let liDiv = document.createElement('div');
         let checkImg = document.createElement('img');
@@ -104,12 +97,21 @@ function redrawList() {
         list.append(li);
         li.setAttribute('class', 'toDoLi');
     });
-    console.log(todos);
+}
+function toDoPagination() {
+    let pages = Math.ceil(todos.length / 5);
+    paginationDiv.innerHTML = '';
+    for (let i = 1; i <= pages; i++) {
+        let pagiSpan = document.createElement('span');
+        pagiSpan.setAttribute('id', i.toString());
+        pagiSpan.innerText = i.toString();
+        paginationDiv.append(pagiSpan);
+    }
 }
 restoreBtn.addEventListener('click', (e) => {
     e.preventDefault();
     todos.splice(deletedEl.id, 0, deletedEl);
-    redrawList();
+    redrawList(todos);
     fixId(todos);
     restoreBtn.disabled = true;
 });
@@ -131,9 +133,10 @@ addBtn.addEventListener('click', (e) => {
         else {
             todos.push(user1);
             localStorage.setItem('todos', JSON.stringify(todos));
-            redrawList();
+            redrawList(todos);
             input.value = '';
         }
     }
+    toDoPagination();
     fixId(todos);
 });

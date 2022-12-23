@@ -4,12 +4,14 @@ const addBtn = document.getElementById('addBtn') as HTMLButtonElement
 let list = document.getElementById('list') as HTMLOListElement
 let finishedList = document.getElementById('finishedList') as HTMLOListElement
 const restoreBtn = document.getElementById('restoreBtn') as HTMLButtonElement
+let paginationDiv = document.getElementById('pagination') as HTMLDivElement
 
 type User = {
   name: string
   id: number
   date: Date
 }
+
 let todos: User[] = []
 let finishedTodos: User[] = [
   { name: 'Become succesful', id: 0, date: new Date() },
@@ -24,7 +26,7 @@ function loadTodos() {
   let newFinishedTodos = localStorage.getItem('finishedTodos')
   if (newTodos) {
     todos = JSON.parse(newTodos)
-    redrawList()
+    redrawList(todos)
   }
   if (newFinishedTodos) {
     finishedTodos = JSON.parse(newFinishedTodos)
@@ -44,7 +46,6 @@ function nameCheck(inputName: string) {
     console.log('go nema')
   }
 }
-
 // Function for matching the id with the element index.
 function fixId(array: User[]): void {
   array.map((el) => (el.id = array.map((ele) => ele.name).indexOf(el.name)))
@@ -57,12 +58,10 @@ function drawFinished(): void {
     finishedList.append(li)
   })
 }
-
 //Function for redrawing the todo list using the "todos" array.
-function redrawList() {
+function redrawList(array: User[]) {
   list.innerHTML = ''
-
-  todos.forEach((el) => {
+  array.forEach((el: User) => {
     let li = document.createElement('li')
     let deleteBtn = document.createElement('button')
     let finishBtn = document.createElement('button')
@@ -70,36 +69,28 @@ function redrawList() {
     // ------------------------------------------------------------
     finishBtn.setAttribute('class', 'finishBtn')
     finishBtn.addEventListener('click', (): void => {
-      todos.splice(el.id, 1)
+      array.splice(el.id, 1)
       let finishedEl: User = el
       finishedTodos.push(finishedEl)
       if (finishedTodos.length == 10) {
         finishedTodos.splice(0, 1)
       }
       drawFinished()
-      redrawList()
-      fixId(todos)
-      localStorage.setItem('todos', JSON.stringify(todos))
+      redrawList(array)
+      fixId(array)
+      localStorage.setItem('todos', JSON.stringify(array))
       localStorage.setItem('finishedTodos', JSON.stringify(finishedTodos))
     })
     // ---------------------------------------------------------------
     deleteBtn.setAttribute('class', 'deleteBtn')
     deleteBtn.addEventListener('click', (): void => {
-      todos.splice(el.id, 1)
+      array.splice(el.id, 1)
       deletedEl = el
-      fixId(todos)
-      redrawList()
-      localStorage.setItem('todos', JSON.stringify(todos))
+      fixId(array)
+      redrawList(array)
+      localStorage.setItem('todos', JSON.stringify(array))
       restoreBtn.disabled = false
     })
-    // editBtn.setAttribute('class', 'editBtn')
-    // editBtn.innerText = 'a'
-    // editBtn.addEventListener('click', (): void => {
-    //   editEl = el
-    //   todos.splice(el.id, 1)
-    //   fixId(todos)
-    //   redrawList()
-    // })
     li.innerHTML = `<p class="testP">${el.name}</p>`
     let liDiv = document.createElement('div')
     let checkImg = document.createElement('img')
@@ -113,13 +104,21 @@ function redrawList() {
     list.append(li)
     li.setAttribute('class', 'toDoLi')
   })
-  console.log(todos)
 }
-
+function toDoPagination() {
+  let pages = Math.ceil(todos.length / 5)
+  paginationDiv.innerHTML = ''
+  for (let i = 1; i <= pages; i++) {
+    let pagiSpan = document.createElement('span')
+    pagiSpan.setAttribute('id', i.toString())
+    pagiSpan.innerText = i.toString()
+    paginationDiv.append(pagiSpan)
+  }
+}
 restoreBtn.addEventListener('click', (e): void => {
   e.preventDefault()
   todos.splice(deletedEl.id, 0, deletedEl)
-  redrawList()
+  redrawList(todos)
   fixId(todos)
   restoreBtn.disabled = true
 })
@@ -141,9 +140,10 @@ addBtn.addEventListener('click', (e): void => {
     } else {
       todos.push(user1)
       localStorage.setItem('todos', JSON.stringify(todos))
-      redrawList()
+      redrawList(todos)
       input.value = ''
     }
   }
+  toDoPagination()
   fixId(todos)
 })
