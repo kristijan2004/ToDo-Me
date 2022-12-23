@@ -98,16 +98,16 @@ function redrawList(array) {
         li.setAttribute('class', 'toDoLi');
     });
 }
-function toDoPagination() {
-    let pages = Math.ceil(todos.length / 5);
-    paginationDiv.innerHTML = '';
-    for (let i = 1; i <= pages; i++) {
-        let pagiSpan = document.createElement('span');
-        pagiSpan.setAttribute('id', i.toString());
-        pagiSpan.innerText = i.toString();
-        paginationDiv.append(pagiSpan);
-    }
-}
+// function toDoPagination() {
+//   let pages = Math.ceil(todos.length / 5)
+//   paginationDiv.innerHTML = ''
+//   for (let i = 1; i <= pages; i++) {
+//     let pagiSpan = document.createElement('span')
+//     pagiSpan.setAttribute('id', i.toString())
+//     pagiSpan.innerText = i.toString()
+//     paginationDiv.append(pagiSpan)
+//   }
+// }
 restoreBtn.addEventListener('click', (e) => {
     e.preventDefault();
     todos.splice(deletedEl.id, 0, deletedEl);
@@ -137,6 +137,6 @@ addBtn.addEventListener('click', (e) => {
             input.value = '';
         }
     }
-    toDoPagination();
+    // toDoPagination()
     fixId(todos);
 });
