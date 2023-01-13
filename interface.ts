@@ -1,10 +1,9 @@
 const input = document.getElementById('addInput') as HTMLInputElement
-// const input1 = document.getElementById('addInput1') as HTMLInputElement
 const addBtn = document.getElementById('addBtn') as HTMLButtonElement
-let list = document.getElementById('list') as HTMLOListElement
-let finishedList = document.getElementById('finishedList') as HTMLOListElement
+const list = document.getElementById('list') as HTMLOListElement
+const finishedList = document.getElementById('finishedList') as HTMLOListElement
 const restoreBtn = document.getElementById('restoreBtn') as HTMLButtonElement
-let paginationDiv = document.getElementById('pagination') as HTMLDivElement
+const paginationDiv = document.getElementById('pagination') as HTMLDivElement
 
 type User = {
   name: string
@@ -18,9 +17,11 @@ let finishedTodos: User[] = [
   { name: 'Buy Milk', id: 1, date: new Date() },
   { name: 'Take the laundry', id: 2, date: new Date() }
 ]
+
 var editEl: User
 var deletedEl: User
 
+//----------FUNCTION FOR FETHCING THE TODO LIST FROM THE LOCAL STORAGE AND DRAWING THEM INTO THE LIST------------
 function loadTodos() {
   let newTodos = localStorage.getItem('todos')
   let newFinishedTodos = localStorage.getItem('finishedTodos')
@@ -33,20 +34,14 @@ function loadTodos() {
     drawFinished()
   }
 }
+
+//------------- ON LOAD FUNCTION FOR DRAWING BOTH ACTIVE AND FINISHED ITEMS-----------------------------
 window.addEventListener('load', () => {
   loadTodos()
   drawFinished()
 })
 
-function nameCheck(inputName: string) {
-  let item = todos.find((el) => el.name === inputName)
-  if (item) {
-    console.log('go ima')
-  } else {
-    console.log('go nema')
-  }
-}
-// Function for matching the id with the element index.
+// -------------------------Function for matching the id with the element index.----------------------------
 function fixId(array: User[]): void {
   array.map((el) => (el.id = array.map((ele) => ele.name).indexOf(el.name)))
 }
@@ -58,63 +53,58 @@ function drawFinished(): void {
     finishedList.append(li)
   })
 }
-//Function for redrawing the todo list using the "todos" array.
+
+//----------------Function for redrawing the todo list using the "todos" array.-------------------------------
 function redrawList(array: User[]) {
   list.innerHTML = ''
   array.forEach((el: User) => {
-    let li = document.createElement('li')
-    let deleteBtn = document.createElement('button')
-    let finishBtn = document.createElement('button')
-    let editBtn = document.createElement('button')
-    // ------------------------------------------------------------
-    finishBtn.setAttribute('class', 'finishBtn')
-    finishBtn.addEventListener('click', (): void => {
-      array.splice(el.id, 1)
-      let finishedEl: User = el
-      finishedTodos.push(finishedEl)
-      if (finishedTodos.length == 10) {
-        finishedTodos.splice(0, 1)
-      }
-      drawFinished()
-      redrawList(array)
-      fixId(array)
-      localStorage.setItem('todos', JSON.stringify(array))
-      localStorage.setItem('finishedTodos', JSON.stringify(finishedTodos))
-    })
-    // ---------------------------------------------------------------
-    deleteBtn.setAttribute('class', 'deleteBtn')
-    deleteBtn.addEventListener('click', (): void => {
-      array.splice(el.id, 1)
-      deletedEl = el
-      fixId(array)
-      redrawList(array)
-      localStorage.setItem('todos', JSON.stringify(array))
-      restoreBtn.disabled = false
-    })
+    const li = document.createElement('li')
     li.innerHTML = `<p class="testP">${el.name}</p>`
-    let liDiv = document.createElement('div')
-    let checkImg = document.createElement('img')
-    let deleteImg = document.createElement('img')
-    checkImg.setAttribute('src', './Images/done.png')
-    deleteImg.setAttribute('src', './Images/delete.png')
-    finishBtn.append(checkImg)
-    deleteBtn.append(deleteImg)
-    li.append(liDiv)
-    liDiv.append(deleteBtn, finishBtn, editBtn)
+    li.append(createButtons(el, array))
     list.append(li)
     li.setAttribute('class', 'toDoLi')
   })
 }
-// function toDoPagination() {
-//   let pages = Math.ceil(todos.length / 5)
-//   paginationDiv.innerHTML = ''
-//   for (let i = 1; i <= pages; i++) {
-//     let pagiSpan = document.createElement('span')
-//     pagiSpan.setAttribute('id', i.toString())
-//     pagiSpan.innerText = i.toString()
-//     paginationDiv.append(pagiSpan)
-//   }
-// }
+
+// ------------------------FUNCTION FOR CREATING THE DELETE AND FINISH BUTTONS ON THE LI ELEMENT-------------------
+function createButtons(el: User, array: User[]): HTMLDivElement {
+  const deleteBtn = document.createElement('button')
+  const finishBtn = document.createElement('button')
+  deleteBtn.setAttribute('class', 'deleteBtn')
+  finishBtn.setAttribute('class', 'finishBtn')
+  let checkImg = document.createElement('img')
+  let deleteImg = document.createElement('img')
+  checkImg.setAttribute('src', './Images/done.png')
+  deleteImg.setAttribute('src', './Images/delete.png')
+  finishBtn.append(checkImg)
+  deleteBtn.append(deleteImg)
+  finishBtn.addEventListener('click', (): void => {
+    array.splice(el.id, 1)
+    let finishedEl: User = el
+    finishedTodos.push(finishedEl)
+    if (finishedTodos.length == 10) {
+      finishedTodos.splice(0, 1)
+    }
+    drawFinished()
+    redrawList(array)
+    fixId(array)
+    localStorage.setItem('todos', JSON.stringify(array))
+    localStorage.setItem('finishedTodos', JSON.stringify(finishedTodos))
+  })
+  deleteBtn.addEventListener('click', (): void => {
+    array.splice(el.id, 1)
+    deletedEl = el
+    fixId(array)
+    redrawList(array)
+    localStorage.setItem('todos', JSON.stringify(array))
+    restoreBtn.disabled = false
+  })
+  const liDiv = document.createElement('div')
+  liDiv.append(deleteBtn, finishBtn)
+  return liDiv
+}
+
+//--------EVENT LISTENER ON THE RESTORE BUTTON FOR RESTORING THE DELETED ELEMENT INTO THE ACTIVE LIST---------
 restoreBtn.addEventListener('click', (e): void => {
   e.preventDefault()
   todos.splice(deletedEl.id, 0, deletedEl)
@@ -122,8 +112,9 @@ restoreBtn.addEventListener('click', (e): void => {
   fixId(todos)
   restoreBtn.disabled = true
 })
+
+//-------- EVENT LISTENER ON THE ADD BUTTON FOR ADDING TODOS INTO THE ACTIVE LIST USING THE INPUT VALUE------------
 addBtn.addEventListener('click', (e): void => {
-  // let num: number = parseInt(input1.value)
   e.preventDefault()
   if (input.value !== '') {
     let nam: string = input.value
@@ -136,7 +127,7 @@ addBtn.addEventListener('click', (e): void => {
 
     let item = todos.find((el) => el.name === nam)
     if (item) {
-      console.log('go ima')
+      console.log('The item is already in the list.')
     } else {
       todos.push(user1)
       localStorage.setItem('todos', JSON.stringify(todos))
@@ -144,6 +135,5 @@ addBtn.addEventListener('click', (e): void => {
       input.value = ''
     }
   }
-  // toDoPagination()
   fixId(todos)
 })

@@ -1,11 +1,10 @@
 "use strict";
 const input = document.getElementById('addInput');
-// const input1 = document.getElementById('addInput1') as HTMLInputElement
 const addBtn = document.getElementById('addBtn');
-let list = document.getElementById('list');
-let finishedList = document.getElementById('finishedList');
+const list = document.getElementById('list');
+const finishedList = document.getElementById('finishedList');
 const restoreBtn = document.getElementById('restoreBtn');
-let paginationDiv = document.getElementById('pagination');
+const paginationDiv = document.getElementById('pagination');
 let todos = [];
 let finishedTodos = [
     { name: 'Become succesful', id: 0, date: new Date() },
@@ -30,15 +29,6 @@ window.addEventListener('load', () => {
     loadTodos();
     drawFinished();
 });
-function nameCheck(inputName) {
-    let item = todos.find((el) => el.name === inputName);
-    if (item) {
-        console.log('go ima');
-    }
-    else {
-        console.log('go nema');
-    }
-}
 // Function for matching the id with the element index.
 function fixId(array) {
     array.map((el) => (el.id = array.map((ele) => ele.name).indexOf(el.name)));
@@ -55,59 +45,53 @@ function drawFinished() {
 function redrawList(array) {
     list.innerHTML = '';
     array.forEach((el) => {
-        let li = document.createElement('li');
-        let deleteBtn = document.createElement('button');
-        let finishBtn = document.createElement('button');
-        let editBtn = document.createElement('button');
-        // ------------------------------------------------------------
-        finishBtn.setAttribute('class', 'finishBtn');
-        finishBtn.addEventListener('click', () => {
-            array.splice(el.id, 1);
-            let finishedEl = el;
-            finishedTodos.push(finishedEl);
-            if (finishedTodos.length == 10) {
-                finishedTodos.splice(0, 1);
-            }
-            drawFinished();
-            redrawList(array);
-            fixId(array);
-            localStorage.setItem('todos', JSON.stringify(array));
-            localStorage.setItem('finishedTodos', JSON.stringify(finishedTodos));
-        });
-        // ---------------------------------------------------------------
-        deleteBtn.setAttribute('class', 'deleteBtn');
-        deleteBtn.addEventListener('click', () => {
-            array.splice(el.id, 1);
-            deletedEl = el;
-            fixId(array);
-            redrawList(array);
-            localStorage.setItem('todos', JSON.stringify(array));
-            restoreBtn.disabled = false;
-        });
+        const li = document.createElement('li');
+        const deleteBtn = document.createElement('button');
+        const finishBtn = document.createElement('button');
+        // --------------------FINISH BUTTON FUNC----------------------------------------
+        // ---------------------------------------------------------------------
         li.innerHTML = `<p class="testP">${el.name}</p>`;
-        let liDiv = document.createElement('div');
-        let checkImg = document.createElement('img');
-        let deleteImg = document.createElement('img');
-        checkImg.setAttribute('src', './Images/done.png');
-        deleteImg.setAttribute('src', './Images/delete.png');
-        finishBtn.append(checkImg);
-        deleteBtn.append(deleteImg);
-        li.append(liDiv);
-        liDiv.append(deleteBtn, finishBtn, editBtn);
+        li.append(createButtons(el, array));
         list.append(li);
         li.setAttribute('class', 'toDoLi');
     });
 }
-// function toDoPagination() {
-//   let pages = Math.ceil(todos.length / 5)
-//   paginationDiv.innerHTML = ''
-//   for (let i = 1; i <= pages; i++) {
-//     let pagiSpan = document.createElement('span')
-//     pagiSpan.setAttribute('id', i.toString())
-//     pagiSpan.innerText = i.toString()
-//     paginationDiv.append(pagiSpan)
-//   }
-// }
+function createButtons(el, array) {
+    const deleteBtn = document.createElement('button');
+    const finishBtn = document.createElement('button');
+    deleteBtn.setAttribute('class', 'deleteBtn');
+    finishBtn.setAttribute('class', 'finishBtn');
+    let checkImg = document.createElement('img');
+    let deleteImg = document.createElement('img');
+    checkImg.setAttribute('src', './Images/done.png');
+    deleteImg.setAttribute('src', './Images/delete.png');
+    finishBtn.append(checkImg);
+    deleteBtn.append(deleteImg);
+    finishBtn.addEventListener('click', () => {
+        array.splice(el.id, 1);
+        let finishedEl = el;
+        finishedTodos.push(finishedEl);
+        if (finishedTodos.length == 10) {
+            finishedTodos.splice(0, 1);
+        }
+        drawFinished();
+        redrawList(array);
+        fixId(array);
+        localStorage.setItem('todos', JSON.stringify(array));
+        localStorage.setItem('finishedTodos', JSON.stringify(finishedTodos));
+    });
+    deleteBtn.addEventListener('click', () => {
+        array.splice(el.id, 1);
+        deletedEl = el;
+        fixId(array);
+        redrawList(array);
+        localStorage.setItem('todos', JSON.stringify(array));
+        restoreBtn.disabled = false;
+    });
+    const liDiv = document.createElement('div');
+    liDiv.append(deleteBtn, finishBtn);
+    return liDiv;
+}
 restoreBtn.addEventListener('click', (e) => {
     e.preventDefault();
     todos.splice(deletedEl.id, 0, deletedEl);
@@ -137,6 +121,5 @@ addBtn.addEventListener('click', (e) => {
             input.value = '';
         }
     }
-    // toDoPagination()
     fixId(todos);
 });
